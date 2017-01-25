@@ -645,9 +645,9 @@ class REDay
     #  is day or greater, then the result is always true
     return true if @less_precise_match && less_precise?(date)
 
-	date_to_use = ensure_precision(date)
+	  date_to_use = ensure_precision(date)
 
-	if(@spans_midnight&&date_to_use.hour<12) then
+	  if(@spans_midnight&&date_to_use.hour<12) then
       #Assume next day
       return @range.include?(get_next(date_to_use.hour,date_to_use.min))
     end

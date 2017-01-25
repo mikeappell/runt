@@ -168,7 +168,7 @@ class Date
 
   def date_precision
 	if @date_precision.nil? then
-      if self.class == DateTime then
+    if self.class == DateTime then
         @date_precision = Runt::DPrecision::SEC
 	  else
         @date_precision = Runt::DPrecision::DAY
@@ -232,20 +232,32 @@ end
 # Contributed by Ara T. Howard who is pretty sure he got the idea from
 # somewhere else. :-)
 #
-class Numeric #:nodoc:
-  def microseconds() Float(self  * (10 ** -6)) end unless self.instance_methods.include?('microseconds')
-  def milliseconds() Float(self  * (10 ** -3)) end unless self.instance_methods.include?('milliseconds')
-  def seconds() self end unless self.instance_methods.include?('seconds')
-  def minutes() 60 * seconds end unless self.instance_methods.include?('minutes')
-  def hours() 60 * minutes end unless self.instance_methods.include?('hours')
-  def days() 24 * hours end unless self.instance_methods.include?('days')
-  def weeks() 7 * days end unless self.instance_methods.include?('weeks')
-  def months() 30 * days end unless self.instance_methods.include?('months')
-  def years() 365 * days end unless self.instance_methods.include?('years')
-  def decades() 10 * years end unless self.instance_methods.include?('decades')
-  # This causes RDoc to hurl:
-  %w[
-  microseconds milliseconds seconds minutes hours days weeks months years decades
-  ].each{|m| alias_method m.chop, m}
+# Extended by Thore Karstens to make it play nice with Rails > 4.2
+# This will extend the ActiveSupport::Duration with an duration method
+if defined?(ActiveSupport::Duration)
+  load 'active_support/duration.rb'
+  load 'active_support/core_ext/numeric/time.rb'
+  class Integer
+    def decades
+      ActiveSupport::Duration.new(self * 10.years.to_i, [[:decades, self]])
+    end
+    alias_method :decade, :decades
+  end
+else
+  class Numeric #:nodoc:
+    def microseconds() Float(self  * (10 ** -6)) end unless self.instance_methods.include?('microseconds')
+    def milliseconds() Float(self  * (10 ** -3)) end unless self.instance_methods.include?('milliseconds')
+    def seconds() self end unless self.instance_methods.include?('seconds')
+    def minutes() 60 * seconds end unless self.instance_methods.include?('minutes')
+    def hours() 60 * minutes end unless self.instance_methods.include?('hours')
+    def days() 24 * hours end unless self.instance_methods.include?('days')
+    def weeks() 7 * days end unless self.instance_methods.include?('weeks')
+    def months() 30 * days end unless self.instance_methods.include?('months')
+    def years() 365 * days end unless self.instance_methods.include?('years')
+    def decades() 10 * years end unless self.instance_methods.include?('decades')
+    # This causes RDoc to hurl:
+    %w[
+    microseconds milliseconds seconds minutes hours days weeks months years decades
+    ].each{|m| alias_method m.chop, m}
+  end
 end
-

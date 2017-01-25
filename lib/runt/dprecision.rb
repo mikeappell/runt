@@ -134,7 +134,7 @@ module Runt
       def label
         LABEL[@precision]
       end
-  end
+    end
 
   #Pseudo Singletons:
   YEAR = Precision.year
