@@ -235,8 +235,6 @@ end
 # Extended by Thore Karstens to make it play nice with Rails > 4.2
 # This will extend the ActiveSupport::Duration with an duration method
 if defined?(ActiveSupport::Duration)
-  load 'active_support/duration.rb'
-  load 'active_support/core_ext/numeric/time.rb'
   class Integer
     def decades
       ActiveSupport::Duration.new(self * 10.years.to_i, [[:decades, self]])
