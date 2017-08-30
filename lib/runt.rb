@@ -31,7 +31,6 @@
 # warranties of merchantibility and fitness for a particular
 # purpose.
 
-require 'yaml'
 require 'time'
 require 'date'
 require "runt/version"
@@ -196,15 +195,6 @@ class Time
       @precision=Runt::DPrecision::SEC
     end
     old_initialize(*args)
-  end
-
-  alias :old_to_yaml :to_yaml
-  def to_yaml(options)
-    if self.instance_variables.empty?
-      self.old_to_yaml(options)
-    else
-      Time.old_parse(self.to_s).old_to_yaml(options)
-    end
   end
 
   class << self
