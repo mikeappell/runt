@@ -98,7 +98,7 @@ module Runt
     def to_s; @id.to_s end
 
     def == (other)
-      return true if other.kind_of?(Event) && @id==other.id
+      return true if other.kind_of?(Runt::Event) && @id==other.id
     end
 
   end
